@@ -14,8 +14,8 @@ builder.Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
     options.AssumeDefaultVersionWhenUnspecified = true;
 
-    //options.ApiVersionReader = new QueryStringApiVersionReader("hps-api-version");
-    options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
+    options.ApiVersionReader = new QueryStringApiVersionReader("hps-api-version");
+    //options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
 
 builder.Services.AddVersionedApiExplorer(options =>
@@ -34,9 +34,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()/*.WithHeaders("X-API-Version")*/
-        .WithOrigins("https://localhost:7220")
-        .WithHeaders("X-API-Version");
+        builder
+            .WithOrigins("https://localhost:7220")
+            .WithHeaders("X-API-Version");
     });
 });
 
