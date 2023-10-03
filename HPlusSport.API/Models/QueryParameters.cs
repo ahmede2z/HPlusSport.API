@@ -12,5 +12,20 @@
             get => _size;
             set => _size = Math.Min(MaxSize, value);
         }
+
+        public string SortBy { get; set; } = "Id";
+        private string _sortOrder = "asc";
+
+        public string SortOrder
+        {
+            get => _sortOrder;
+            set
+            {
+                if (value is "asc" or "desc")
+                {
+                    _sortOrder = value;
+                }
+            }
+        }
     }
 }
