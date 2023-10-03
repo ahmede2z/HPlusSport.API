@@ -23,7 +23,7 @@
             {
                 if (value is "asc" or "desc")
                 {
-                    _sortOrder = value;
+                    _sortOrder = value; 
                 }
             }
         }

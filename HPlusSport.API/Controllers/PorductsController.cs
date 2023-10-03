@@ -69,6 +69,7 @@ namespace HPlusSport.API.Controllers
                 }
             }
 
+
             products = products
                 .Skip(queryParameters.Size * (queryParameters.Page - 1))
                 .Take(queryParameters.Size);
