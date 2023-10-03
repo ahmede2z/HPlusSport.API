@@ -8,27 +8,37 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddApiVersioning(option =>
-    {
-        option.ReportApiVersions = true;
-        option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-        option.AssumeDefaultVersionWhenUnspecified = true;
-
-        option.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
-    });
-
-
-builder.Services.AddVersionedApiExplorer(option =>
+builder.Services.AddApiVersioning(options =>
 {
-    option.GroupNameFormat = "v'VVV'";
-    option.SubstituteApiVersionInUrl = true;
+    options.ReportApiVersions = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+
+    //options.ApiVersionReader = new QueryStringApiVersionReader("hps-api-version");
+    options.ApiVersionReader = new HeaderApiVersionReader("X-API-Version");
 });
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ShopContext>(Option =>
-    Option.UseInMemoryDatabase("Shop"));
+builder.Services.AddDbContext<ShopContext>(options => { options.UseInMemoryDatabase("Shop"); });
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()/*.WithHeaders("X-API-Version")*/
+        .WithOrigins("https://localhost:7220")
+        .WithHeaders("X-API-Version");
+    });
+});
 
 var app = builder.Build();
 
@@ -38,10 +48,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
