@@ -8,5 +8,6 @@
         public string Name { get; set; } = string.Empty;
         public string Sku { get; set; } = string.Empty;
 
+        public string SearchTirm { get; set; } = string.Empty;
     }
 }

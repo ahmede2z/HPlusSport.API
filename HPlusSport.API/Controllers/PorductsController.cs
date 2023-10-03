@@ -46,7 +46,17 @@ namespace HPlusSport.API.Controllers
             {
                 products = products.Where(
                     p => p.Name.ToLower()
-                        .Contains(queryParameters.Name.ToLower()));
+                             .Contains(queryParameters.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(queryParameters.SearchTirm))
+            {
+                products = products.Where(
+                    p => p.Name.ToLower()
+                             .Contains(queryParameters.Name.ToLower())
+                         || p.Sku.ToLower()
+                             .Contains(queryParameters.Name.ToLower())
+                    );
             }
 
             if (!string.IsNullOrEmpty(queryParameters.SortBy))
